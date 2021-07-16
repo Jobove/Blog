@@ -3,6 +3,7 @@
 
 <hr style=" border:solid; width:100px; height:1px;" color=#000000 size=1">
 
+
 # 前言
 
 前段时间(校赛之前)看了快速幂, 没有深挖而后在校赛中遇到了D题, 一道几乎是矩阵快速幂的模板的题目, 经过对矩阵快速幂的简单学习终于AC了这道题,  于是  ~~迫不期待写篇博客嘚瑟一下~~  在这里记下笔记.
@@ -11,8 +12,8 @@
 
 普通的幂的求法十分简单:
 
- $ a ^ {i} = a  *...*a$
-这需要花费$i - 1$次运算来达到目的, 然而将 a 的 i 次幂拆分开来便可以大大减少运算次数使时间复杂度减少到 $O(\log_{2}{n})$ , 如 $ a ^ 6 =  (a * a ^ 2) ^ 2$ , 具体代码实现如下:
+ $$ a ^ {i} = a  *...*a$$
+这需要花费$$i - 1$$次运算来达到目的, 然而将 a 的 i 次幂拆分开来便可以大大减少运算次数使时间复杂度减少到 $$O(\log_{2}{n})$$ , 如 $$ a ^ 6 =  (a * a ^ 2) ^ 2$$ , 具体代码实现如下:
 
 ```cpp
 typedef unsigned long long ull;
@@ -27,6 +28,7 @@ ull fastNormalPower(ull base, ull power, ull mod){
 	return ans;
 }
 ```
+
 进一步优化:
 
 ```cpp
@@ -41,17 +43,22 @@ ull fastNormalPower(ull base, ull power, ull mod){
 	return ans;
 }
 ```
+
 简单解释:
+
 > 1. 如果一个数为奇数, 则其二进制表示最后一位一定为1, 则与1进行与操作得到的结果为1, 即当power为奇数时power & 1的返回值为true
 > 2. 将一个数除以2在二进制表示中即将其所有位均向右移动一位
 
 # 二、矩阵快速幂
+
 ## 1.矩阵乘法
+
 这是线性代数的基础知识了, 偷张图来放一下原理好了:
 ![引用自cmmdc的博客](https://img-blog.csdnimg.cn/img_convert/d933c3ae5eaba09cf9d6f23a56eb7312.png#pic_center)
 该图引用自[cmmdc的博客](https://www.cnblogs.com/cmmdc/p/6936196.html), 也可以看看这位大佬对矩阵快速幂的基础讲解.
 
 那么代码实现也一目了然了:
+
 ```cpp
 const ull maxN = 2;
 void mul(ull arr1[][n], ull arr2[][n]){
@@ -82,6 +89,7 @@ void matrixPow(ull arr[][n], ull power){
 ```
 
 ## 3.花里胡哨的实现
+
 由于看的时候受到了[看的那篇文章](https://zhuanlan.zhihu.com/p/42639682)的影响, 所以我自己写的时候用的是结构体等等的骚操作(~~我觉得代码很好看~~), 代码如下:
 
 ```cpp
@@ -115,7 +123,9 @@ struct Matrix{
     };
 };
 ```
+
 ## 4.矩阵快速幂求Fibonacci数列第n项
+
 学会了矩阵快速幂, 我们便可以通过Fibonacci数列的矩阵乘法表示来求其第n项了.
 首先是Fibonacci数列的定义:
 $$
@@ -135,6 +145,7 @@ $$
 \begin{bmatrix} f(n + 1) & f(n) \\ f(n) & f(n-1) \end{bmatrix} = {\begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}} ^ {n-1} \begin{bmatrix} f(2) &f(1) \\ f(1) & f(0) \end{bmatrix}
 $$
 因此可以通过矩阵快速幂进行实现:
+
 ```cpp
 #include <bits/stdc++.h>
 #define sync ios::sync_with_stdio(false)
@@ -188,26 +199,31 @@ int main(){
     return 0;
 }
 ```
+
 # 三、校赛D题的题解
+
 ## 1.题面
-首先令 $f(n) =
+
+首先令 $$f(n) =
 \begin{cases}
 1 	&n = 1\\
 1 	&n = 2\\
 f(n - 1) + f(n - 2) &n \geq 3
-\end{cases}$ ,$F(i) = \sum_{i=1}^n f(i^2)$
+\end{cases}$$ ,$$F(i) = \sum_{i=1}^n f(i^2)$$
 
-输入的第一行为一个整数```n```且满足$ 1 \leq n \leq 10^4$，接下来的n行中每行都有一个整数$a_i$满足$1 \leq a_i \leq 10 ^ {18}$
+输入的第一行为一个整数```n```且满足$$ 1 \leq n \leq 10^4$$，接下来的n行中每行都有一个整数$$a_i$$满足$$1 \leq a_i \leq 10 ^ {18}$$
 
-要求输出n行, 每行均为$ F(a_i) \mod {10^9 +7}$
+要求输出n行, 每行均为$$ F(a_i) \mod {10^9 +7}$$
 
 ## 2.重要公式
+
 有了上面的基础知识, 我们终于可以着手解决这道题了!
 然而并不是.
 实际上你需要知道以下的式子才能动手解决, 毕竟你不能每项都进行平方取和的操作:
 $$F(n) = f(n) *f(n+1)$$
 
 ## 3.代码实现
+
 至此, 我们终于可以写下这道题的代码并提交了:
 
 ```cpp
@@ -263,11 +279,13 @@ int main(){
     return 0;
 }
 ```
+
 实际上只需要把上面的代码稍作删改即可得到这里的代码, 提交, AC!
 
 ~~PS: 实际上复现赛提交的时候因为不慎将main函数里的i定义为了int类型怒WA三发, 我果然是个演员(逃~~ 
 
 # 四、尾声
+
 1. 这是[洛谷的模板题](https://www.luogu.com.cn/problem/P3390#submit), 不妨在这里试试你刚学到的矩阵快速幂或是自己写的矩阵快速幂代码.
 2. 感谢[这篇博客](https://blog.csdn.net/wust_zzwh/article/details/52058209)和[这篇文章](https://zhuanlan.zhihu.com/p/42639682)的讲解, 你也可以去看看他们的讲解.
 3. 苣鶸的第二篇博客, 如有错漏, 请不吝赐教.
